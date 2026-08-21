@@ -1,8 +1,7 @@
-﻿using IT_ELECTIVE_PREFINALS_PROJECT.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models
+namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
     public class Customer
     {
@@ -21,7 +20,12 @@ namespace WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models
         [StringLength(20)]
         public string Phone { get; set; } = string.Empty;
 
-        // Navigation Property linking Customer to Tickets
+        [StringLength(100)]
+        public string? Company { get; set; }
+
+        public int IsActive { get; set; } = 1;
+
+        // Navigation Property (Task M3.1)
         public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
