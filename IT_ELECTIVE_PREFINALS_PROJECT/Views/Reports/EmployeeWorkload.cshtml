@@ -1,0 +1,33 @@
+﻿@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.EmployeeWorkloadViewModel>
+
+@{
+    ViewData["Title"] = "Employee Workload";
+}
+
+<div class="container mt-4">
+    <h2>📊 Employee Workload Report</h2>
+    <p class="text-muted">List of active employees and their assigned ticket count.</p>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Employee Name</th>
+                <th>Department</th>
+                <th>Assigned Workload</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.EmployeeName</td>
+                    <td>@item.DepartmentName</td>
+                    <td>
+                        <span class="badge @(item.ActiveTicketCount > 0 ? "bg-warning text-dark" : "bg-secondary") fs-6">
+                            @item.ActiveTicketCount tickets
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
