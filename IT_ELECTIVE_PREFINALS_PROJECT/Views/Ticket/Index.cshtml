@@ -1,0 +1,69 @@
+@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Tickets List";
+}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Tickets List</h2>
+        <a asp-action="Create" class="btn btn-primary">Create New Ticket</a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-striped table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Title</th>
+                    <th>Customer</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        var statusStr = item.Status?.ToString() ?? "Pending";
+                        <tr>
+                            <td>#@item.TicketId</td>
+                            <td class="fw-bold">@item.Title</td>
+                            <td>@(item.Customer != null ? item.Customer.Name : "N/A")</td>
+                            <td>@item.CreatedAt</td>
+                            <td>
+                                @if (statusStr == "Open")
+                                {
+                                    <span class="badge bg-success">Open</span>
+                                }
+                                else if (statusStr == "InProgress" || statusStr == "In Progress")
+                                {
+                                    <span class="badge bg-warning text-dark">In Progress</span>
+                                }
+                                else if (statusStr == "Closed")
+                                {
+                                    <span class="badge bg-secondary">Closed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info text-dark">@statusStr</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-sm btn-info text-white">Details</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No tickets available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
