@@ -1,23 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
-    [Table("TeamMembers")]
     public class TeamMember
     {
+        [Key]
+        public int Id { get; set; }
+
         public int TeamId { get; set; }
-        public int EmployeeId { get; set; }
-
-        [StringLength(30)]
-        public string? RoleInTeam { get; set; }
-
-        public string? JoinedAt { get; set; }
-
-        [ForeignKey("TeamId")]
         public virtual Team? Team { get; set; }
 
-        [ForeignKey("EmployeeId")]
+        public int EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
+
+        public string? RoleInTeam { get; set; }
     }
 }
