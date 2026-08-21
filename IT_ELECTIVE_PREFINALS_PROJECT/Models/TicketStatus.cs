@@ -3,17 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
-    [Table("Tags")]
-    public class Tag
+    [Table("TicketStatuses")]
+    public class TicketStatus
     {
         [Key]
-        public int TagId { get; set; }
+        public int StatusId { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        [StringLength(20)]
-        public string? ColorHex { get; set; }
+        public int IsClosedState { get; set; } = 0;
+        public int SortOrder { get; set; } = 0;
     }
 }

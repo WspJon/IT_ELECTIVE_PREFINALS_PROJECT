@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
+﻿namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
-    internal class DepartmentWorkloadViewModel
+    public class DepartmentWorkloadViewModel
     {
+        public string DepartmentName { get; set; } = string.Empty;
+        public string DepartmentCode { get; set; } = string.Empty;
+        public int EmployeeCount { get; set; }
     }
 }

@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
-    [Table("Tags")]
-    public class Tag
+    [Table("TicketPriorities")]
+    public class TicketPriority
     {
         [Key]
-        public int TagId { get; set; }
+        public int PriorityId { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        [StringLength(20)]
-        public string? ColorHex { get; set; }
+        public int Level { get; set; } = 1;
     }
 }

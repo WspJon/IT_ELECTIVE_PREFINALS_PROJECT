@@ -14,7 +14,6 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 
         public string? JoinedAt { get; set; }
 
-        // Navigation Properties
         [ForeignKey("TeamId")]
         public virtual Team? Team { get; set; }
 
