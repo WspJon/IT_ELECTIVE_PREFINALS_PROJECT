@@ -1,0 +1,42 @@
+@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<div class="container mt-4">
+    <h2>🎫 Support Tickets Queue</h2>
+    <table class="table table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Customer</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>#@item.Id</strong></td>
+                    <td>@item.Subject</td>
+                    <td>@(item.Customer?.ContactName ?? item.Customer?.CompanyName ?? "-")</td>
+                    <td>@(item.Category?.Name ?? "General")</td>
+                    <td>
+                        <span class="badge bg-warning text-dark">@(item.Priority?.Name ?? "Normal")</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-primary">@(item.Status?.Name ?? "Open")</span>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

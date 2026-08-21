@@ -7,23 +7,19 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class TicketAttachment
     {
         [Key]
-        public int AttachmentId { get; set; }
+        public int Id { get; set; }
 
         public int TicketId { get; set; }
 
         [Required]
-        [StringLength(255)]
         public string FileName { get; set; } = string.Empty;
 
-        [StringLength(255)]
-        public string? FilePath { get; set; }
+        [Required]
+        public string ContentType { get; set; } = string.Empty;
 
-        public int FileSizeBytes { get; set; }
+        public int FileSize { get; set; }
 
-        [StringLength(100)]
-        public string? ContentType { get; set; }
-
-        public string? UploadedAt { get; set; }
+        public string UploadedAt { get; set; } = string.Empty;
 
         [ForeignKey("TicketId")]
         public virtual Ticket? Ticket { get; set; }

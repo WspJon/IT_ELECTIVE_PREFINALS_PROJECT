@@ -5,8 +5,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+// Automatic Dynamic Path Finder para sa lycevm.db
+var dbPath = Path.Combine(builder.Environment.ContentRootPath, "lycevm.db");
+if (!File.Exists(dbPath))
+{
+    var parentDb = Path.Combine(builder.Environment.ContentRootPath, "..", "lycevm.db");
+    if (File.Exists(parentDb))
+    {
+        dbPath = parentDb;
+    }
+}
+
 builder.Services.AddDbContext<HelpDeskContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite($"Data Source={dbPath}"));
 
 var app = builder.Build();
 

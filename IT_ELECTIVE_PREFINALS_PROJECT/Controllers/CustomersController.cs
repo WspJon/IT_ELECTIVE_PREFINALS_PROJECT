@@ -16,7 +16,7 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Controllers
         public async Task<IActionResult> Index()
         {
             var customers = await _context.Customers
-                .OrderBy(c => c.Name)
+                .OrderBy(c => c.ContactName)
                 .ToListAsync();
 
             return View(customers);

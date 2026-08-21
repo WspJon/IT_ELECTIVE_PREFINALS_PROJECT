@@ -7,13 +7,11 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class Tag
     {
         [Key]
-        public int TagId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        [StringLength(20)]
-        public string? ColorHex { get; set; }
+        public virtual ICollection<TicketTag> TicketTags { get; set; } = new List<TicketTag>();
     }
 }

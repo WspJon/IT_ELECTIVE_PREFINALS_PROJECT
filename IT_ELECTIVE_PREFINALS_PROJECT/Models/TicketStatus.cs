@@ -7,13 +7,11 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class TicketStatus
     {
         [Key]
-        public int StatusId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        public int IsClosedState { get; set; } = 0;
-        public int SortOrder { get; set; } = 0;
+        public int IsClosed { get; set; } = 0;
     }
 }

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.TicketCategory>
+
+@{
+    ViewData["Title"] = "Category Hierarchy";
+}
+
+<div class="container mt-4">
+    <h2>🌳 Category Hierarchy Tree</h2>
+    <p class="text-muted">Self-referencing parent and subcategory relationships.</p>
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Category</th>
+                <th>Hierarchy Level</th>
+                <th>Parent Category</th>
+                <th>Sub-categories Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cat in Model)
+            {
+                <tr>
+                    <td><strong>@cat.Name</strong></td>
+                    <td>
+                        @if (cat.ParentCategoryId == null)
+                        {
+                            <span class="badge bg-primary">Root Category</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-info text-dark">Subcategory</span>
+                        }
+                    </td>
+                    <td>@(cat.ParentCategory?.Name ?? "None (Top-Level)")</td>
+                    <td><span class="badge bg-secondary">@cat.SubCategories.Count subcategories</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

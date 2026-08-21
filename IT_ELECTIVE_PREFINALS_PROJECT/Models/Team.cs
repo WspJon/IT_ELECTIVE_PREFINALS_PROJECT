@@ -7,20 +7,15 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class Team
     {
         [Key]
-        public int TeamId { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; } = string.Empty;
-
-        [StringLength(255)]
-        public string? Description { get; set; }
+        public int Id { get; set; }
 
         public int DepartmentId { get; set; }
 
-        public int IsActive { get; set; } = 1;
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        // Navigation Properties
+        public string? Description { get; set; }
+
         [ForeignKey("DepartmentId")]
         public virtual Department? Department { get; set; }
 

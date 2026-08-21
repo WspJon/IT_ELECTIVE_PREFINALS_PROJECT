@@ -1,0 +1,26 @@
+﻿@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.DepartmentWorkloadViewModel>
+
+@{
+    ViewData["Title"] = "Department Headcount";
+}
+
+<div class="container mt-4">
+    <h2>🏢 Department Headcount & Workload</h2>
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Department Name</th>
+                <th>Total Employees</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@item.DepartmentName</strong></td>
+                    <td><span class="badge bg-primary fs-6">@item.EmployeeCount members</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

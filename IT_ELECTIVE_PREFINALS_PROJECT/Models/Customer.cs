@@ -1,31 +1,29 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
+    [Table("Customers")]
     public class Customer
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string CompanyName { get; set; } = string.Empty;
 
         [Required]
-        [EmailAddress]
-        [StringLength(150)]
+        public string ContactName { get; set; } = string.Empty;
+
+        [Required]
         public string Email { get; set; } = string.Empty;
 
-        [StringLength(20)]
-        public string Phone { get; set; } = string.Empty;
+        public string? Phone { get; set; }
 
-        [StringLength(100)]
-        public string? Company { get; set; }
+        public string CreatedAt { get; set; } = string.Empty;
 
         public int IsActive { get; set; } = 1;
 
-        // Navigation Property (Task M3.1)
         public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

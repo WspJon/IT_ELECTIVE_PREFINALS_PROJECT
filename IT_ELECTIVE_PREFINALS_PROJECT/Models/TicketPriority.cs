@@ -7,12 +7,13 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class TicketPriority
     {
         [Key]
-        public int PriorityId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        public int Level { get; set; } = 1;
+        public int SortOrder { get; set; }
+
+        public int ResponseHours { get; set; }
     }
 }

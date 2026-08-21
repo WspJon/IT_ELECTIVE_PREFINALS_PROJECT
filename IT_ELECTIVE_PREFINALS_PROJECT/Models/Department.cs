@@ -7,21 +7,15 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class Department
     {
         [Key]
-        public int DepartmentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(10)]
-        public string Code { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         public int IsActive { get; set; } = 1;
 
-        public string? CreatedAt { get; set; }
-
-        // Navigation Properties
         public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
         public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
     }

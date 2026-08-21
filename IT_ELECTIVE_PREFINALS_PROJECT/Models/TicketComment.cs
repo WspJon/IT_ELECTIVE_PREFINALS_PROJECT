@@ -7,16 +7,16 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
     public class TicketComment
     {
         [Key]
-        public int CommentId { get; set; }
+        public int Id { get; set; }
 
         public int TicketId { get; set; }
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
 
         [Required]
-        public string CommentText { get; set; } = string.Empty;
+        public string Comment { get; set; } = string.Empty;
 
-        public string? CreatedAt { get; set; }
-        public int IsInternalOnly { get; set; } = 0;
+        public string CreatedAt { get; set; } = string.Empty;
+        public int IsInternal { get; set; } = 0;
 
         [ForeignKey("TicketId")]
         public virtual Ticket? Ticket { get; set; }

@@ -5,33 +5,42 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Data
 {
     public class HelpDeskContext : DbContext
     {
-        public HelpDeskContext(DbContextOptions<HelpDeskContext> options)
-            : base(options)
+        public HelpDeskContext(DbContextOptions<HelpDeskContext> options) : base(options)
         {
         }
 
-        public DbSet<Department> Departments { get; set; } = null!;
-        public DbSet<Employee> Employees { get; set; } = null!;
-        public DbSet<Customer> Customers { get; set; } = null!;
-        public DbSet<Tag> Tags { get; set; } = null!;
-        public DbSet<Ticket> Tickets { get; set; } = null!;
-        public DbSet<Team> Teams { get; set; } = null!;
-        public DbSet<TeamMember> TeamMembers { get; set; } = null!;
-        public DbSet<TicketComment> TicketComments { get; set; } = null!;
-        public DbSet<TicketAttachment> TicketAttachments { get; set; } = null!;
-        public DbSet<TicketAssignment> TicketAssignments { get; set; } = null!;
-        public DbSet<TicketTag> TicketTags { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<TicketStatus> TicketStatuses { get; set; }
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+        public DbSet<TicketCategory> TicketCategories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketAssignment> TicketAssignments { get; set; }
+        public DbSet<TicketComment> TicketComments { get; set; }
+        public DbSet<TicketTag> TicketTags { get; set; }
+        public DbSet<TicketAttachment> TicketAttachments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Composite key configuration in case TeamMember lacks a single Id primary key
+            // Composite Primary Keys
             modelBuilder.Entity<TeamMember>()
                 .HasKey(tm => new { tm.TeamId, tm.EmployeeId });
 
+            modelBuilder.Entity<TicketAssignment>()
+                .HasKey(ta => new { ta.TicketId, ta.EmployeeId });
+
+            modelBuilder.Entity<TicketTag>()
+                .HasKey(tt => new { tt.TicketId, tt.TagId });
+
+            // Unique Constraints / Indexes
             modelBuilder.Entity<Department>()
-                .HasIndex(d => d.Code)
+                .HasIndex(d => d.Name)
                 .IsUnique();
 
             modelBuilder.Entity<Employee>()
