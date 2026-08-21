@@ -1,0 +1,39 @@
+﻿@model IEnumerable<IT_ELECTIVE_PREFINALS_PROJECT.Models.Department>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="container mt-4">
+    <h2>Departments List</h2>
+    <table class="table table-striped table-hover mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Code</th>
+                <th>Department Name</th>
+                <th>Status</th>
+                <th>Total Employees</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dept in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-secondary">@dept.Code</span></td>
+                    <td>@dept.Name</td>
+                    <td>
+                        @if (dept.IsActive == 1)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                    <td><strong>@dept.Employees.Count</strong></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
