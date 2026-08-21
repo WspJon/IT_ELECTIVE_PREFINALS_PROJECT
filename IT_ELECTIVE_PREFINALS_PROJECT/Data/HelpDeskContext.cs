@@ -16,6 +16,7 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Data
         public DbSet<Tag> Tags { get; set; } = null!;
         public DbSet<Ticket> Tickets { get; set; } = null!;
         public DbSet<Team> Teams { get; set; } = null!;
+        public DbSet<TeamMember> TeamMembers { get; set; } = null!;
         public DbSet<TicketComment> TicketComments { get; set; } = null!;
         public DbSet<TicketAttachment> TicketAttachments { get; set; } = null!;
         public DbSet<TicketAssignment> TicketAssignments { get; set; } = null!;
@@ -24,6 +25,10 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Composite key configuration in case TeamMember lacks a single Id primary key
+            modelBuilder.Entity<TeamMember>()
+                .HasKey(tm => new { tm.TeamId, tm.EmployeeId });
 
             modelBuilder.Entity<Department>()
                 .HasIndex(d => d.Code)
