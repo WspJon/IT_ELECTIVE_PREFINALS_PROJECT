@@ -1,28 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using IT_ELECTIVE_PREFINALS_PROJECT.Data;
+﻿// GET: Tickets/Unassigned
+using Microsoft.AspNetCore.Mvc;
 
-namespace IT_ELECTIVE_PREFINALS_PROJECT.Controllers
+public async Task<IActionResult> Unassigned()
 {
-    public class TicketsController : Controller
-    {
-        private readonly HelpDeskContext _context;
+    var unassignedTickets = await _context.Tickets
+        .Include(t => t.Customer)
+        .Include(t => t.Category)
+        .Where(t => !t.TicketAssignments.Any())
+        .OrderByDescending(t => t.CreatedAt)
+        .ToListAsync();
 
-        public TicketsController(HelpDeskContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Tickets
-        public async Task<IActionResult> Index()
-        {
-            var tickets = await _context.Tickets
-                .Include(t => t.Customer)
-                .Include(t => t.Category)
-                .OrderByDescending(t => t.CreatedAt)
-                .ToListAsync();
-
-            return View(tickets);
-        }
-    }
+    return View(unassignedTickets);
 }
