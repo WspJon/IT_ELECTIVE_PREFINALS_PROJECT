@@ -5,6 +5,7 @@
 }
 
 <div class="container my-4">
+    <!-- Ticket Summary Card -->
     <div class="card mb-4 shadow-sm">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Ticket #@Model.TicketId: @Model.Title</h3>
@@ -14,6 +15,49 @@
             <p><strong>Description:</strong> @Model.Description</p>
             <p><strong>Created Date:</strong> @Model.CreatedAt</p>
             <p><strong>Customer:</strong> @(Model.Customer != null ? Model.Customer.Name : "N/A")</p>
+
+            <!-- Task M3.5: Tags Display -->
+            <div class="mt-3">
+                <strong>Tags: </strong>
+                @if (Model.TicketTags != null && Model.TicketTags.Any())
+                {
+                    @foreach (var ticketTag in Model.TicketTags)
+                    {
+                        <span class="badge bg-info text-dark me-1">@(ticketTag.Tag != null ? ticketTag.Tag.Name : "Tag")</span>
+                    }
+                }
+                else
+                {
+                    <span class="text-muted">No tags assigned</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Task M3.5: Assigned Employees Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Assigned Staff</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.TicketAssignments != null && Model.TicketAssignments.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var assignment in Model.TicketAssignments)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <strong>Assigned Employee:</strong> @(assignment.Employee != null ? assignment.Employee.Email : "N/A")
+                            </span>
+                            <small class="text-muted">Assigned Date: @assignment.AssignedAt</small>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">No employees assigned to this ticket.</div>
+            }
         </div>
     </div>
 
@@ -82,7 +126,7 @@
                 <div class="alert alert-info mb-0">No attachments found for this ticket.</div>
             }
         </div>
-    </div> 
+    </div>
 
     <div>
         <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
