@@ -1,8 +1,7 @@
-﻿using IT_ELECTIVE_PREFINALS_PROJECT.Models;
-using Microsoft.EntityFrameworkCore;
-using WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using IT_ELECTIVE_PREFINALS_PROJECT.Models;
 
-namespace WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Data
+namespace IT_ELECTIVE_PREFINALS_PROJECT.Data
 {
     public class HelpDeskContext : DbContext
     {
@@ -26,7 +25,6 @@ namespace WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Task M3.2: Configure Unique Index Constraints
             modelBuilder.Entity<Department>()
                 .HasIndex(d => d.Code)
                 .IsUnique();

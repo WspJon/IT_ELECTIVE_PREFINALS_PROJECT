@@ -1,4 +1,4 @@
-@model WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket
+@model IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket
 
 @{
     ViewData["Title"] = "Ticket Details";
@@ -7,12 +7,12 @@
 <div class="container my-4">
     <div class="card mb-4 shadow-sm">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">Ticket #@Model.Id: @Model.Title</h3>
+            <h3 class="mb-0">Ticket #@Model.TicketId: @Model.Title</h3>
             <span class="badge bg-light text-dark">@Model.Status</span>
         </div>
         <div class="card-body">
             <p><strong>Description:</strong> @Model.Description</p>
-            <p><strong>Created Date:</strong> @Model.CreatedAt.ToString("f")</p>
+            <p><strong>Created Date:</strong> @Model.CreatedAt</p>
             <p><strong>Customer:</strong> @(Model.Customer != null ? Model.Customer.Name : "N/A")</p>
         </div>
     </div>
@@ -31,13 +31,9 @@
                         <div class="list-group-item list-group-item-action flex-column align-items-start mb-2 rounded border">
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h6 class="mb-1 fw-bold text-primary">
-                                    @(comment.Employee != null ? comment.Employee.Name : "Author")
-                                    @if (comment.IsInternal)
-                                    {
-                                        <span class="badge bg-warning text-dark ms-2">Internal Note</span>
-                                    }
+                                    @(comment.Employee != null ? comment.Employee.Email : "Author")
                                 </h6>
-                                <small class="text-muted">@comment.CreatedAt.ToString("MMM dd, yyyy - hh:mm tt")</small>
+                                <small class="text-muted">@comment.CreatedAt</small>
                             </div>
                             <p class="mb-1 mt-2 text-dark">@comment.CommentText</p>
                         </div>
@@ -47,6 +43,43 @@
             else
             {
                 <div class="alert alert-info mb-0">No comments found for this ticket.</div>
+            }
+        </div>
+    </div>
+
+    <!-- Task M3.4: Attachments Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Attachments</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.TicketAttachments != null && Model.TicketAttachments.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>File Name</th>
+                                <th>Content Type</th>
+                                <th>Uploaded Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var attachment in Model.TicketAttachments.OrderByDescending(a => a.UploadedAt))
+                            {
+                                <tr>
+                                    <td>@attachment.FileName</td>
+                                    <td><code>@attachment.ContentType</code></td>
+                                    <td>@attachment.UploadedAt</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">No attachments found for this ticket.</div>
             }
         </div>
     </div>
