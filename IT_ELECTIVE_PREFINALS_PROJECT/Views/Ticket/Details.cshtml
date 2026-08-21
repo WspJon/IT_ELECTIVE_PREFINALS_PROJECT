@@ -1,0 +1,137 @@
+@model IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details - #" + Model.TicketId;
+}
+
+<div class="container mt-4">
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">&larr; Back to Tickets List</a>
+    </div>
+
+    <!-- Header Section (Task M2.7) -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Ticket #@Model.TicketId: @Model.Title</h4>
+            <div>
+                @switch (Model.Priority)
+                {
+                    case "Urgent":
+                        <span class="badge bg-danger me-1">Priority: Urgent</span>
+                        break;
+                    case "High":
+                        <span class="badge bg-warning text-dark me-1">Priority: High</span>
+                        break;
+                    case "Medium":
+                        <span class="badge bg-info text-dark me-1">Priority: Medium</span>
+                        break;
+                    default:
+                        <span class="badge bg-secondary me-1">Priority: Low</span>
+                        break;
+                }
+
+                @switch (Model.Status)
+                {
+                    case "Open":
+                        <span class="badge bg-primary">Status: Open</span>
+                        break;
+                    case "In Progress":
+                        <span class="badge bg-warning text-dark">Status: In Progress</span>
+                        break;
+                    case "Resolved":
+                        <span class="badge bg-success">Status: Resolved</span>
+                        break;
+                    default:
+                        <span class="badge bg-secondary">Status: Closed</span>
+                        break;
+                }
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Customer:</strong> @(Model.Customer != null ? $"{Model.Customer.FirstName} {Model.Customer.LastName}" : "N/A")</p>
+                    <p class="mb-1"><strong>Email:</strong> @(Model.Customer != null ? Model.Customer.Email : "N/A")</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Category:</strong> @(Model.Category != null ? Model.Category.CategoryName : "Uncategorized")</p>
+                    <p class="mb-1"><strong>Created Date:</strong> @Model.CreatedAt.ToString("MMMM dd, yyyy HH:mm")</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div>
+                <h5>Description</h5>
+                <p class="card-text text-muted">
+                    @(string.IsNullOrEmpty(Model.Description) ? "No description provided." : Model.Description)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Associations Section (Task M2.8) -->
+    <div class="row">
+        <!-- Assigned Technicians -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Assigned Technicians</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.TicketAssignments != null && Model.TicketAssignments.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var assignment in Model.TicketAssignments)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        @(assignment.Employee != null ? $"{assignment.Employee.FirstName} {assignment.Employee.LastName}" : "Unknown Employee")
+                                    </span>
+                                    <div>
+                                        @if (assignment.IsPrimary)
+                                        {
+                                            <span class="badge bg-primary me-1">Primary</span>
+                                        }
+                                        <small class="text-muted">Assigned @assignment.AssignedAt.ToString("yyyy-MM-dd")</small>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No technicians currently assigned.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Tags -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Tags</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.TicketTags != null && Model.TicketTags.Any())
+                    {
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var ticketTag in Model.TicketTags)
+                            {
+                                var badgeColor = !string.IsNullOrEmpty(ticketTag.Tag?.ColorCode) ? ticketTag.Tag.ColorCode : "#6c757d";
+                                <span class="badge p-2" style="background-color: @badgeColor; color: #fff;">
+                                    @(ticketTag.Tag?.TagName ?? "Tag")
+                                </span>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No tags assigned to this ticket.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
