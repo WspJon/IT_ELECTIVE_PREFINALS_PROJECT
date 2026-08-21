@@ -26,27 +26,33 @@ namespace IT_ELECTIVE_PREFINALS_PROJECT.Controllers
             return View(tickets);
         }
 
+        // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var ticket = await _context.Tickets
                 .Include(t => t.Customer)
-                .Include(t => t.Category)
-                .Include(t => t.Priority)
-                .Include(t => t.Status)
-                .Include(t => t.TicketAssignments).ThenInclude(ta => ta.Employee)
-                .Include(t => t.TicketTags).ThenInclude(tt => tt.Tag)
-                .Include(t => t.TicketComments).ThenInclude(tc => tc.Employee)
+                .Include(t => t.TicketComments)
+                    .ThenInclude(c => c.Employee)
                 .Include(t => t.TicketAttachments)
+                .Include(t => t.TicketTags)
+                    .ThenInclude(tt => tt.Tag)
+                .Include(t => t.TicketAssignments)
+                    .ThenInclude(ta => ta.Employee)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
 
-            if (ticket == null) return NotFound();
+            if (ticket == null)
+            {
+                return NotFound();
+            }
 
             return View(ticket);
         }
 
-   
         public async Task<IActionResult> Unassigned()
         {
             var unassignedTickets = await _context.Tickets
