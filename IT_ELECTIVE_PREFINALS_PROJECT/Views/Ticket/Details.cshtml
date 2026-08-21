@@ -1,92 +1,57 @@
-@model IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket
+@model WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models.Ticket
 
 @{
-    ViewData["Title"] = "Ticket Details - #" + Model.TicketId;
+    ViewData["Title"] = "Ticket Details";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Ticket #@Model.TicketId: @Model.Title</h4>
-            <div>
-                <span class="badge bg-warning text-dark me-2">Priority: @(Model.Priority?.Name ?? "Normal")</span>
-                <span class="badge bg-primary">Status: @(Model.Status?.Name ?? "Open")</span>
-            </div>
+<div class="container my-4">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Ticket #@Model.Id: @Model.Title</h3>
+            <span class="badge bg-light text-dark">@Model.Status</span>
         </div>
         <div class="card-body">
-            <h5>Description:</h5>
-            <p class="lead bg-light p-3 rounded border">@(Model.Description ?? "No description provided.")</p>
+            <p><strong>Description:</strong> @Model.Description</p>
+            <p><strong>Created Date:</strong> @Model.CreatedAt.ToString("f")</p>
+            <p><strong>Customer:</strong> @(Model.Customer != null ? Model.Customer.Name : "N/A")</p>
+        </div>
+    </div>
 
-            <hr />
-            <div class="row">
-                <div class="col-md-4">
-                    <h6 class="text-primary">👤 Customer Information</h6>
-                    <p>
-                        <strong>Name:</strong> @(Model.Customer?.Name ?? "-")<br />
-                        <strong>Email:</strong> @(Model.Customer?.Email ?? "-")<br />
-                        <strong>Phone:</strong> @(Model.Customer?.Phone ?? "-")<br />
-                        <strong>Company:</strong> @(Model.Customer?.Company ?? "Individual")
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="text-primary">📂 Ticket Details</h6>
-                    <p>
-                        <strong>Category:</strong> @(Model.Category?.Name ?? "General")<br />
-                        <strong>Created Date:</strong> @(Model.CreatedAt ?? "-")<br />
-                        <strong>Resolved Date:</strong> @(Model.ResolvedAt ?? "Not yet resolved")
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="text-primary">🏷️ Tags</h6>
-                    @if (Model.TicketTags != null && Model.TicketTags.Any())
+    <!-- Task M3.3: Comments Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Comments History</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.TicketComments != null && Model.TicketComments.Any())
+            {
+                <div class="list-group">
+                    @foreach (var comment in Model.TicketComments.OrderByDescending(c => c.CreatedAt))
                     {
-                        <div>
-                            @foreach (var tagJoin in Model.TicketTags)
-                            {
-                                <span class="badge me-1" style="background-color: @(tagJoin.Tag?.ColorHex ?? "#6c757d"); font-size: 0.9rem;">
-                                    @(tagJoin.Tag?.Name)
-                                </span>
-                            }
+                        <div class="list-group-item list-group-item-action flex-column align-items-start mb-2 rounded border">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <h6 class="mb-1 fw-bold text-primary">
+                                    @(comment.Employee != null ? comment.Employee.Name : "Author")
+                                    @if (comment.IsInternal)
+                                    {
+                                        <span class="badge bg-warning text-dark ms-2">Internal Note</span>
+                                    }
+                                </h6>
+                                <small class="text-muted">@comment.CreatedAt.ToString("MMM dd, yyyy - hh:mm tt")</small>
+                            </div>
+                            <p class="mb-1 mt-2 text-dark">@comment.CommentText</p>
                         </div>
                     }
-                    else
-                    {
-                        <p class="text-muted">No tags attached.</p>
-                    }
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">No comments found for this ticket.</div>
+            }
+        </div>
+    </div>
 
-            <hr />
-            <div class="row">
-                <div class="col-md-12">
-                    <h6 class="text-primary">👥 Assigned Technicians</h6>
-                    @if (Model.TicketAssignments != null && Model.TicketAssignments.Any())
-                    {
-                        <ul class="list-group">
-                            @foreach (var assign in Model.TicketAssignments)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span>
-                                        <strong>@(assign.Employee?.FirstName) @(assign.Employee?.LastName)</strong>
-                                        <small class="text-muted">(@(assign.Employee?.Email))</small>
-                                    </span>
-                                    @if (assign.IsPrimary == 1)
-                                    {
-                                        <span class="badge bg-success">Primary Technician</span>
-                                    }
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="text-muted">No technicians currently assigned.</p>
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <a asp-action="Index" class="btn btn-secondary">← Back to Tickets List</a>
-        </div>
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
     </div>
 </div>
