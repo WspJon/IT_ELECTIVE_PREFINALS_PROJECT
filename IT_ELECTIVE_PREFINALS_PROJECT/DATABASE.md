@@ -1,55 +1,49 @@
-# Database Documentation
+## Ticket Ecosystem Schema (Member 2 - Sabesaje)
 
-## Database Overview
-- **Database Engine**: SQLite
-- **Database File**: `lycevm.db`
-- **ORM**: Entity Framework Core (Database-First, Manually mapped without scaffolding)
+### `TicketCategories`
+- `category_id` (INTEGER, PK, Auto Increment)
+- `category_name` (TEXT, Required, Max 100)
+- `parent_category_id` (INTEGER, FK to `TicketCategories.category_id`, Nullable)
 
----
+### `Tags`
+- `tag_id` (INTEGER, PK, Auto Increment)
+- `tag_name` (TEXT, Required, Max 50)
+- `color_code` (TEXT, Nullable, Max 20)
 
-## Core Entities & Schema Description
+### `Tickets`
+- `ticket_id` (INTEGER, PK, Auto Increment)
+- `title` (TEXT, Required, Max 150)
+- `description` (TEXT, Nullable)
+- `status` (TEXT, Required, Default 'Open')
+- `priority` (TEXT, Required, Default 'Medium')
+- `customer_id` (INTEGER, FK to `Customers.customer_id`)
+- `category_id` (INTEGER, FK to `TicketCategories.category_id`)
+- `created_at` (DATETIME, Default Current Timestamp)
+- `updated_at` (DATETIME, Nullable)
 
-### 1. `Departments`
-Stores the departments within the organization.
-- `DepartmentId` (INTEGER, Primary Key, Auto Increment)
-- `Name` (TEXT, Required, Unique, MaxLength 50)
-- `Code` (TEXT, Required, Unique, MaxLength 10)
-- `IsActive` (INTEGER, Default 1)
-- `CreatedAt` (TEXT, Default CURRENT_TIMESTAMP)
+### `TicketAssignments`
+- `ticket_id` (INTEGER, FK to `Tickets.ticket_id`, Composite PK Part 1)
+- `employee_id` (INTEGER, FK to `Employees.employee_id`, Composite PK Part 2)
+- `assigned_at` (DATETIME, Default Current Timestamp)
+- `is_primary` (BOOLEAN, Default 0)
 
-### 2. `Employees`
-Stores staff members handling support tickets and team assignments.
-- `EmployeeId` (INTEGER, Primary Key, Auto Increment)
-- `FirstName` (TEXT, Required, MaxLength 50)
-- `LastName` (TEXT, Required, MaxLength 50)
-- `Email` (TEXT, Required, Unique, MaxLength 100)
-- `Phone` (TEXT, Nullable, MaxLength 20)
-- `DepartmentId` (INTEGER, Foreign Key referencing `Departments(DepartmentId)`)
-- `JobTitle` (TEXT, Nullable, MaxLength 50)
-- `IsActive` (INTEGER, Default 1)
-- `HireDate` (TEXT, Nullable)
+### `TicketComments`
+- `comment_id` (INTEGER, PK, Auto Increment)
+- `ticket_id` (INTEGER, FK to `Tickets.ticket_id`)
+- `author_employee_id` (INTEGER, FK to `Employees.employee_id`, Nullable)
+- `author_customer_id` (INTEGER, FK to `Customers.customer_id`, Nullable)
+- `comment_body` (TEXT, Required)
+- `created_at` (DATETIME, Default Current Timestamp)
+- `is_internal_note` (BOOLEAN, Default 0)
 
-### 3. `Teams`
-Groups employees into functional support teams.
-- `TeamId` (INTEGER, Primary Key, Auto Increment)
-- `Name` (TEXT, Required, Unique, MaxLength 50)
-- `Description` (TEXT, Nullable, MaxLength 255)
-- `DepartmentId` (INTEGER, Foreign Key referencing `Departments(DepartmentId)`)
-- `IsActive` (INTEGER, Default 1)
+### `TicketTags`
+- `ticket_id` (INTEGER, FK to `Tickets.ticket_id`, Composite PK Part 1)
+- `tag_id` (INTEGER, FK to `Tags.tag_id`, Composite PK Part 2)
 
-### 4. `TeamMembers` (Composite Key: `TeamId` + `EmployeeId`)
-Join table associating employees with teams and their specific roles.
-- `TeamId` (INTEGER, Foreign Key referencing `Teams(TeamId)`)
-- `EmployeeId` (INTEGER, Foreign Key referencing `Employees(EmployeeId)`)
-- `RoleInTeam` (TEXT, Nullable, MaxLength 30)
-- `JoinedAt` (TEXT, Default CURRENT_TIMESTAMP)
-
-### 5. `Customers`
-Stores client details who submit support tickets.
-- `CustomerId` (INTEGER, Primary Key, Auto Increment)
-- `Name` (TEXT, Required, MaxLength 100)
-- `Email` (TEXT, Required, Unique, MaxLength 100)
-- `Phone` (TEXT, Nullable, MaxLength 20)
-- `Company` (TEXT, Nullable, MaxLength 100)
-- `CreatedAt` (TEXT, Default CURRENT_TIMESTAMP)
-- `IsActive` (INTEGER, Default 1)
+### `TicketAttachments`
+- `attachment_id` (INTEGER, PK, Auto Increment)
+- `ticket_id` (INTEGER, FK to `Tickets.ticket_id`)
+- `file_name` (TEXT, Required, Max 255)
+- `file_path` (TEXT, Required, Max 500)
+- `file_size_kb` (INTEGER, Nullable)
+- `uploaded_at` (DATETIME, Default Current Timestamp)
