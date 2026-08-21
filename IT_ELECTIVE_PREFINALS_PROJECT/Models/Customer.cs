@@ -1,29 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using IT_ELECTIVE_PREFINALS_PROJECT.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace IT_ELECTIVE_PREFINALS_PROJECT.Models
+namespace WspJon.IT_ELECTIVE_PREFINALS_PROJECT.Models
 {
-    [Table("Customers")]
     public class Customer
     {
         [Key]
-        public int CustomerId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(100)]
+        [EmailAddress]
+        [StringLength(150)]
         public string Email { get; set; } = string.Empty;
 
         [StringLength(20)]
-        public string? Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
 
-        [StringLength(100)]
-        public string? Company { get; set; }
-
-        public string? CreatedAt { get; set; }
-        public int IsActive { get; set; } = 1;
+        // Navigation Property linking Customer to Tickets
+        public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
